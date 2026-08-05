@@ -5,14 +5,15 @@ import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 type Tweet = {
   id: string;
   name: string;
+  text: string;
 };
 
 export default function Index() {
-  const queryKey = "tweets"; // chave que identifica a query
+  const queryKey = "tweets"; // key to identify the query
 
-  const [get, setGet] = useState<Tweet[]>([]); // estado para armazenar os dados da api
+  const [get, setGet] = useState<Tweet[]>([]); // state to hold the fetched tweets
   const queryFn = async () => {
-    try { 
+    try {
       const response = await fetch(
         "https://6a73bea615e0453fe1b42b81.mockapi.io/Tweets"
       );
@@ -24,32 +25,33 @@ export default function Index() {
       return obj;
     } catch (error) {
       console.error("Error fetching data:", error);
-    } 
+    }
   };
 
-  const query = useQuery({
+  // destructuring the result of useQuery to get isLoading, isError, and data
+  const { isLoading, isError, data } = useQuery({
     queryKey: [queryKey],
     queryFn: queryFn,
   });
 
-  if (query.isLoading) {
+  if (isLoading) {
     return <ActivityIndicator />; // early return if the query is loading
   }
 
-  if (query.isError) {
-    return <Text>Error: {query.error instanceof Error ? query.error.message : 'Unknown error'}</Text>;
+  if (isError) {
+    return <Text>Error: Unable to fetch tweets. Please try again later.</Text>;
   }
 
   return (
     <View style={styles.container}>
       <Text>Edit src/app/index.tsx to ed it this screen.</Text>
       <View>
-
-        {query.data && (
+        {data && (
           <View>
-            {query.data.map((item: Tweet) => (
-              <View key={item.id}>
-                <Text>{item.name}</Text>
+            {data.map((item: Tweet) => (
+              <View key={item.id} style={{ marginBottom: 10 }}>
+                <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
+                <Text>{item.text}</Text>
               </View>
             ))}
           </View>
