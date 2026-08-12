@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "expo-router";
 import { Activity, useEffect, useState } from "react";
 import { Text, View, StyleSheet, ActivityIndicator, SafeAreaViewBase, ScrollView } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -33,6 +34,7 @@ export default function Index() {
   const { isLoading, isError, data } = useQuery({
     queryKey: [queryKey],
     queryFn: queryFn,
+    
   });
 
   if (isLoading) {
@@ -64,6 +66,7 @@ export default function Index() {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
+      <Link href={'/novo-tweet'}></Link>
     </View>
   );
 }
