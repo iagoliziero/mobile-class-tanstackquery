@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Activity, useEffect, useState } from "react";
-import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator, SafeAreaViewBase, ScrollView } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 type Tweet = {
   id: string;
@@ -44,19 +45,25 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text>Edit src/app/index.tsx to ed it this screen.</Text>
-      <View>
-        {data && (
-          <View>
-            {data.map((item: Tweet) => (
-              <View key={item.id} style={{ marginBottom: 10 }}>
-                <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
-                <Text>{item.text}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1, width: "100%" }}>
+          <ScrollView>
+            <Text>Edit src/app/index.tsx to ed it this screen.</Text>
+            <View>
+              {data && (
+                <View>
+                  {data.map((item: Tweet) => (
+                    <View key={item.id} style={{ marginBottom: 10 }}>
+                      <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
+                      <Text>{item.text}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </View>
   );
 }
