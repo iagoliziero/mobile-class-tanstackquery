@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 type Tweet = {
@@ -31,6 +32,9 @@ async function createTweet(tweet: Omit<Tweet, "id" | "createdAt">) {
 export default function NovoTweetScreen() {
   const { mutate, isPending, isError, isSuccess, data, error } = useMutation({
     mutationFn: createTweet, // mutation function to create a new tweet
+    onSuccess: () => {
+      router.replace("/");
+    },
   });
 
   if (isPending) {
@@ -51,6 +55,10 @@ export default function NovoTweetScreen() {
         Error: {error instanceof Error ? error.message : "An error occurred"}
       </Text>
     );
+  }
+
+  if (isSuccess) {
+    return <Text>New Tweet created!</Text>;
   }
 
   return (
